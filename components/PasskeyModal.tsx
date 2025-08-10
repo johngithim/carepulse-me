@@ -16,16 +16,35 @@ import {
   InputOTPSeparator,
   InputOTPSlot,
 } from "@/components/ui/input-otp";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Image from "next/image";
-import { useRouter } from "next/navigation";
-import { encryptKey } from "@/lib/utils";
+import { usePathname, useRouter } from "next/navigation";
+import { decryptKey, encryptKey } from "@/lib/utils";
 
 const PasskeyModal = () => {
   const router = useRouter();
+  const path = usePathname();
   const [open, setOpen] = useState(true);
   const [passKey, setPassKey] = useState("");
   const [error, setError] = useState("");
+
+  const encryptedKey =
+    typeof window !== "undefined"
+      ? window.localStorage.getItem("accessKey")
+      : null;
+
+  useEffect(() => {
+    const accessKey = encryptedKey && decryptKey(encryptedKey);
+
+    if (path) {
+      if (accessKey === process.env.NEXT_PUBLIC_ADMIN_PASSKEY) {
+        setOpen(false);
+        router.push("/admin");
+      } else {
+        setOpen(true);
+      }
+    }
+  }, [encryptedKey]);
 
   const validatePasskey = (
     e: React.MouseEvent<HTMLButtonElement, MouseEvent>,
@@ -35,7 +54,9 @@ const PasskeyModal = () => {
     if (passKey === process.env.NEXT_PUBLIC_ADMIN_PASSKEY) {
       const encryptedKey = encryptKey(passKey);
 
-      localStorage.setItem("access", encryptedKey);
+      localStorage.setItem("accessKey", encryptedKey);
+
+      setOpen(false);
     } else {
       setError("Invalid passkey. Please try again.");
     }
