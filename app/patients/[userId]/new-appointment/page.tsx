@@ -14,17 +14,18 @@ export default async function NewAppointment({
             src={"/assets/icons/logo-full.svg"}
             height={1000}
             width={1000}
-            alt={"patient"}
-            className={"mb-12 h-10 w-fit"}
+            alt="patient"
+            className="mb-12 h-10 w-fit"
           />
 
           <AppointmentForm
             type={"create"}
             userId={userId}
-            patientId={patient.$id}
+            patientId={patientId}
+            setOpen={false} 
           />
 
-          <p className={"copyright mt-10 py-1"}>©copyright carepulse</p>
+ <p className={"copyright mt-10 py-1"}>©copyright carepulse</p>
         </div>
       </section>
 
