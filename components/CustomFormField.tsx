@@ -7,6 +7,8 @@ import {
   FormLabel,
   FormMessage,
 } from "@/components/ui/form";
+import * as React from "react"; // ← add
+import { Eye, EyeOff } from "lucide-react";
 import { Control } from "react-hook-form";
 import { FormFieldType } from "@/components/forms/PatientForm";
 import Image from "next/image";
@@ -40,6 +42,35 @@ interface CustomProps {
   renderSkeleton?: (field: any) => React.ReactNode;
 }
 
+const PasswordInput: React.FC<{
+  field: any;
+  placeholder?: string;
+  disabled?: boolean;
+}> = ({ field, placeholder, disabled }) => {
+  const [show, setShow] = React.useState(false);
+
+  return (
+    <div className="relative">
+      <Input
+        type={show ? "text" : "password"}
+        placeholder={placeholder}
+        disabled={disabled}
+        {...field}
+        className="shad-input pr-10"
+      />
+      <button
+        type="button"
+        onClick={() => setShow((s) => !s)}
+        className="eye-style"
+        aria-label={show ? "Hide password" : "Show password"}
+        tabIndex={-1}
+      >
+        {show ? <EyeOff size={18} /> : <Eye size={18} />}
+      </button>
+    </div>
+  );
+};
+
 const RenderField = ({ field, props }: { field: any; props: CustomProps }) => {
   const {
     fieldType,
@@ -51,6 +82,9 @@ const RenderField = ({ field, props }: { field: any; props: CustomProps }) => {
     renderSkeleton,
   } = props;
   switch (fieldType) {
+    case FormFieldType.PASSWORD:
+      const { disabled } = props;
+      return <PasswordInput field={field} disabled={disabled} />;
     case FormFieldType.INPUT:
       return (
         <div className={"flex rounded-md border border-dark-500 bg-dark-400"}>

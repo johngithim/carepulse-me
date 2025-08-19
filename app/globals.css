@@ -71,6 +71,9 @@
     .copyright {
         @apply text-14-regular justify-items-end text-center text-dark-600 xl:text-left;
     }
+    .eye-style {
+        @apply absolute right-3 top-1/2 -translate-y-1/2
+    }
 
     /* ==== SUCCESS */
     .success-img {

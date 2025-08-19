@@ -19,6 +19,7 @@ export enum FormFieldType {
   DATE_PICKER = "datePicker",
   SELECT = "select",
   SKELETON = "skeleton",
+  PASSWORD = "password",
 }
 
 const PatientForm = () => {
@@ -31,6 +32,7 @@ const PatientForm = () => {
       name: "",
       email: "",
       phone: "",
+      password: "",
     },
   });
 
@@ -45,7 +47,7 @@ const PatientForm = () => {
 
       const user = await createUser(userData);
 
-      if (user) router.push(`/patients/${user.$id}/register`);
+      if (user) router.push(`/patients/${user.$id}/new-appointment`);
     } catch (error) {
       console.log(error);
     }
