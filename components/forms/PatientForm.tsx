@@ -40,10 +40,11 @@ const PatientForm = () => {
     name,
     email,
     phone,
+    password,
   }: z.infer<typeof UserFormValidation>) {
     setIsLoading(true);
     try {
-      const userData = { name, email, phone };
+      const userData = { name, email, phone, password };
 
       const user = await createUser(userData);
 
@@ -68,7 +69,7 @@ const PatientForm = () => {
           control={form.control}
           name={"name"}
           label={"Full name"}
-          placeholder={"John Doe"}
+          placeholder={"Enter your hospital name"}
           iconSrc={"/assets/icons/user.svg"}
           iconAlt={"user"}
         />
@@ -80,6 +81,14 @@ const PatientForm = () => {
           placeholder={"johndoe@gmail.com"}
           iconSrc={"/assets/icons/email.svg"}
           iconAlt={"email"}
+        />
+        <CustomFormField
+          fieldType={FormFieldType.PASSWORD}
+          control={form.control}
+          name={"password"}
+          label={"Password"}
+          placeholder={"Enter your password"}
+          iconSrc={"/assets/icons/email.svg"}
         />
         <CustomFormField
           fieldType={FormFieldType.PHONE_INPUT}

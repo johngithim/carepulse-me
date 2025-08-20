@@ -82,7 +82,7 @@ const RegisterForm = ({ user }: { user: User }) => {
           control={form.control}
           name={"name"}
           label={"Full name"}
-          placeholder={"John Doe"}
+          placeholder={"Enter Your hospital name"}
           iconSrc={"/assets/icons/user.svg"}
           iconAlt={"user"}
         />

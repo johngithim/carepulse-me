@@ -42,20 +42,13 @@ interface CustomProps {
   renderSkeleton?: (field: any) => React.ReactNode;
 }
 
-const PasswordInput: React.FC<{
-  field: any;
-  placeholder?: string;
-  disabled?: boolean;
-}> = ({ field, placeholder, disabled }) => {
+const PasswordInput = () => {
   const [show, setShow] = React.useState(false);
 
   return (
     <div className="relative">
       <Input
         type={show ? "text" : "password"}
-        placeholder={placeholder}
-        disabled={disabled}
-        {...field}
         className="shad-input pr-10"
       />
       <button
@@ -83,8 +76,7 @@ const RenderField = ({ field, props }: { field: any; props: CustomProps }) => {
   } = props;
   switch (fieldType) {
     case FormFieldType.PASSWORD:
-      const { disabled } = props;
-      return <PasswordInput field={field} disabled={disabled} />;
+      return <PasswordInput />;
     case FormFieldType.INPUT:
       return (
         <div className={"flex rounded-md border border-dark-500 bg-dark-400"}>
