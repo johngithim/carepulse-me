@@ -11,16 +11,7 @@ import { PatientFormValidation } from "@/lib/validation";
 import { useRouter } from "next/navigation";
 import { registerPatient } from "@/lib/actions/patient.actions";
 import { FormFieldType } from "@/components/forms/PatientForm";
-import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
-import {
-  Doctors,
-  GenderOptions,
-  IdentificationTypes,
-  PatientFormDefaultValues,
-} from "@/constants";
-import { Label } from "@/components/ui/label";
-import { SelectItem } from "@/components/ui/select";
-import Image from "next/image";
+import { PatientFormDefaultValues } from "@/constants";
 import FileUploader from "@/components/FileUploader";
 
 const RegisterForm = ({ user }: { user: User }) => {
@@ -34,6 +25,7 @@ const RegisterForm = ({ user }: { user: User }) => {
       name: "",
       email: "",
       phone: "",
+      password: "",
     },
   });
 
@@ -58,14 +50,13 @@ const RegisterForm = ({ user }: { user: User }) => {
       const patientData = {
         ...values,
         userId: user.$id,
-        birthDate: new Date(values.birthDate),
         identificationDocument: formData,
       };
 
       // @ts-expect-error to continue
       const patient = await registerPatient(patientData);
 
-      if (patient) router.push(`/patients/${user.$id}/new-appointment`);
+      if (patient) router.push(`/patients/${user.$id}/register`);
     } catch (error) {
       console.log(error);
     }
@@ -81,12 +72,9 @@ const RegisterForm = ({ user }: { user: User }) => {
       >
         <section className={"space-y-4"}>
           <h1 className={"header"}>Welcome 👋</h1>
-          <p className={"text-dark-700"}>Let us know more about your self.</p>
-        </section>
-        <section className={"space-y-4"}>
-          <div className={"mb-9 space-y-1"}>
-            <h2 className={"sub-header"}>Personal Information</h2>
-          </div>
+          <p className={"text-dark-700"}>
+            Let us know more about your hospital.
+          </p>
         </section>
 
         <CustomFormField
@@ -94,7 +82,7 @@ const RegisterForm = ({ user }: { user: User }) => {
           control={form.control}
           name={"name"}
           label={"Full name"}
-          placeholder={"John Doe"}
+          placeholder={"Enter Your hospital name"}
           iconSrc={"/assets/icons/user.svg"}
           iconAlt={"user"}
         />
@@ -110,6 +98,13 @@ const RegisterForm = ({ user }: { user: User }) => {
             iconAlt={"email"}
           />
           <CustomFormField
+            fieldType={FormFieldType.PASSWORD}
+            control={form.control}
+            name={"password"}
+            label={"Password"}
+            placeholder={"Enter your password"}
+          />
+          <CustomFormField
             fieldType={FormFieldType.PHONE_INPUT}
             control={form.control}
             name={"phone"}
@@ -117,164 +112,21 @@ const RegisterForm = ({ user }: { user: User }) => {
             placeholder={"+251 9 1031 34065"}
           />
         </div>
-        <div className={"flex flex-col gap-6 xl:flex-row"}>
-          <CustomFormField
-            fieldType={FormFieldType.DATE_PICKER}
-            control={form.control}
-            name={"birthDate"}
-            label={"Date of birth"}
-          />
-          <CustomFormField
-            fieldType={FormFieldType.SKELETON}
-            control={form.control}
-            name={"gender"}
-            label={"Gender"}
-            renderSkeleton={(field) => (
-              <FormControl>
-                <RadioGroup
-                  className={"flex h-11 gap-6 xl:justify-between"}
-                  onValueChange={field.onChange}
-                  defaultValue={field.value}
-                >
-                  {GenderOptions.map((option) => (
-                    <div key={option} className={"radio-group"}>
-                      <RadioGroupItem value={option} id={option} />
-                      <Label htmlFor={option} className={"cursor-pointer"}>
-                        {option}
-                      </Label>
-                    </div>
-                  ))}
-                </RadioGroup>
-              </FormControl>
-            )}
-          />
-        </div>
-
-        <div className={"flex flex-col gap-6 xl:flex-row"}>
-          <CustomFormField
-            fieldType={FormFieldType.INPUT}
-            control={form.control}
-            name={"address"}
-            label={"Address"}
-            placeholder={"Piyasa, Wawel street"}
-          />
-          <CustomFormField
-            fieldType={FormFieldType.INPUT}
-            control={form.control}
-            name={"occupation"}
-            label={"Occupation"}
-            placeholder={"Engineer"}
-          />
-        </div>
-        <div className={"flex flex-col gap-6 xl:flex-row"}>
-          <CustomFormField
-            fieldType={FormFieldType.INPUT}
-            control={form.control}
-            name={"emergencyContactName"}
-            label={"Emergency Contact Name"}
-            placeholder={"Guardian's name"}
-          />
-          <CustomFormField
-            fieldType={FormFieldType.PHONE_INPUT}
-            control={form.control}
-            name={"emergencyContactNumber"}
-            label={"Emergency Contact numeber"}
-            placeholder={"+251 9 1031 3495"}
-          />
-        </div>
-
-        <section className={"space-y-4"}>
-          <div className={"mb-9 space-y-1"}>
-            <h2 className={"sub-header"}>Medical Information</h2>
-          </div>
-        </section>
-
-        <CustomFormField
-          fieldType={FormFieldType.SELECT}
-          control={form.control}
-          name={"primaryPhysician"}
-          label={"Primary Physician"}
-          placeholder={"Select a physician"}
-        >
-          {Doctors.map((doctor) => (
-            <SelectItem
-              key={doctor.name}
-              value={doctor.name}
-              className={"flex cursor-pointer items-center gap-2"}
-            >
-              <div className={"flex cursor-pointer gap-2"}>
-                <Image
-                  src={doctor.image}
-                  alt={doctor.name}
-                  width={32}
-                  height={32}
-                  className={"rounded-full border border-dark-500"}
-                />
-                <p>{doctor.name}</p>
-              </div>
-            </SelectItem>
-          ))}
-        </CustomFormField>
-
-        <div className={"flex flex-col gap-6 xl:flex-row"}>
-          <CustomFormField
-            fieldType={FormFieldType.INPUT}
-            control={form.control}
-            name={"insuranceProvider"}
-            label={"Insurance Provider"}
-            placeholder={"BlueCross BlueShield"}
-          />
-          <CustomFormField
-            fieldType={FormFieldType.INPUT}
-            control={form.control}
-            name={"insurancePolicyNumber"}
-            label={"Insurance Policy Number"}
-            placeholder={"ABC123456789"}
-          />
-        </div>
-        <div className={"flex flex-col gap-6 xl:flex-row"}>
-          <CustomFormField
-            fieldType={FormFieldType.TEXTAREA}
-            control={form.control}
-            name={"familyMedicalHistory"}
-            label={"Family Medical History"}
-            placeholder={"Mother had... and father had..."}
-          />
-          <CustomFormField
-            fieldType={FormFieldType.TEXTAREA}
-            control={form.control}
-            name={"pastMedicalHistory"}
-            label={"Past Medical History"}
-            placeholder={"Appendactomy ...."}
-          />
-        </div>
-
-        <section className={"space-y-4"}>
-          <div className={"mb-9 space-y-1"}>
-            <h2 className={"sub-header"}>Identification and Verification</h2>
-          </div>
-        </section>
-
-        <CustomFormField
-          fieldType={FormFieldType.SELECT}
-          control={form.control}
-          name={"identificationType"}
-          label={"Identification Type"}
-          placeholder={"Select identification type"}
-        >
-          {IdentificationTypes.map((type) => (
-            <SelectItem key={type} value={type}>
-              {type}
-            </SelectItem>
-          ))}
-        </CustomFormField>
 
         <CustomFormField
           fieldType={FormFieldType.INPUT}
           control={form.control}
-          name={"identificationNumber"}
-          label={"Identification Number"}
-          placeholder={"123456789"}
+          name={"address"}
+          label={"Address"}
+          placeholder={"Piyasa, Wawel street"}
+        />
+
+        <CustomFormField
+          fieldType={FormFieldType.INPUT}
+          control={form.control}
+          name={"insurancePolicyNumber"}
+          label={"Insurance Policy Number"}
+          placeholder={"ABC123456789"}
         />
 
         <CustomFormField
@@ -287,31 +139,6 @@ const RegisterForm = ({ user }: { user: User }) => {
               <FileUploader files={field.value} onChange={field.onChange} />
             </FormControl>
           )}
-        />
-
-        <section className={"space-y-4"}>
-          <div className={"mb-9 space-y-1"}>
-            <h2 className={"sub-header"}>Consent and Privacy</h2>
-          </div>
-        </section>
-
-        <CustomFormField
-          fieldType={FormFieldType.CHECKBOX}
-          control={form.control}
-          name={"treatmentConsent"}
-          label={"i consent to treatment"}
-        />
-        <CustomFormField
-          fieldType={FormFieldType.CHECKBOX}
-          control={form.control}
-          name={"disclosureConsent"}
-          label={"i consent to disclosure of information"}
-        />
-        <CustomFormField
-          fieldType={FormFieldType.CHECKBOX}
-          control={form.control}
-          name={"privacyConsent"}
-          label={"i consent to privacy policy"}
         />
 
         <SubmitButton isLoading={isLoading}>Get started</SubmitButton>

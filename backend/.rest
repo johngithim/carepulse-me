@@ -1,0 +1,49 @@
+### Profile Creation Request for Doctor
+POST http://localhost:3000/api/auth/doctor/register
+Content-Type: application/json
+
+{
+  "firstname": "Natan",
+  "lastname": "Yidnekachew",
+  "email": "nathanyidnekachew383@gmail.com",
+  "age": 25,
+  "phoneno": "0951234567",
+  "address": "Addis Ababa",
+  "speciality": "Neurology",
+  "telegram": "@ghost_user31",
+  "whatsapp": "0912345678",
+  "password": "password123"
+}
+
+### Login Request for Doctor
+POST http://localhost:3000/api/auth/doctor/login
+Content-Type: application/json
+
+{
+  "email": "nathanyidnekachew383@gmail.com",
+  "password": "password123"
+}
+
+
+### Profile Retrieval Request
+GET http://localhost:3000/api/profile
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6NCwiZW1haWwiOiJuYXRoYW55aWRuZWthY2hldzM4M0BnbWFpbC5jb20iLCJpYXQiOjE3NTQyMTExMDEsImV4cCI6MTc1NDIxNDcwMX0.Yw4ddzrw-vO_aQQ74WKuKmkjvMz1y6R9w22rAjTIhNg
+
+### Protected Route Request for Doctor Profile
+GET http://localhost:3000/doctor/profile
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6NCwiZW1haWwiOiJuYXRoYW55aWRuZWthY2hldzM4M0BnbWFpbC5jb20iLCJpYXQiOjE3NTQyMjg3NTIsImV4cCI6MTc1NDIzMjM1Mn0.kj7HZtKQvkH90ZrEDWUtpgMfhCb72yxUDyukdWoh_RA
+
+
+### Protected Route Request for Patient Profile
+GET http://localhost:3000/patient/profile
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6NCwiZW1haWwiOiJuYXRoYW55aWRuZWthY2hldzM4M0BnbWFpbC5jb20iLCJpYXQiOjE3NTQyMTExMDEsImV4cCI6MTc1NDIxNDcwMX0.Yw4ddzrw-vO_aQQ74WKuKmkjvMz1y6R9w22rAjTIhNg
+
+
+### Profile Edition for Doctor
+PUT http://localhost:3000/api/auth/doctor/profile
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6NCwiZW1haWwiOiJuYXRoYW55aWRuZWthY2hldzM4M0BnbWFpbC5jb20iLCJpYXQiOjE3NTQyMzA0MTEsImV4cCI6MTc1NDIzNDAxMX0.cwTmIUVLT4S6NnZKvHEnM7rvQTM71jgZIEgIL_Bwct8
+Content-Type: application/json
+
+{
+
+}
